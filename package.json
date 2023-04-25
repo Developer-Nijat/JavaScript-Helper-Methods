@@ -1,6 +1,6 @@
 {
   "name": "@developer.nijat/js-helpers",
-  "version": "1.0.8",
+  "version": "1.0.10",
   "description": "Useful JavaScript Methods by Nijat Aliyev",
   "keywords": [
     "js",
@@ -13,6 +13,11 @@
     "aliyev"
   ],
   "main": "index.js",
+  "homepage": "https://github.com/Developer-Nijat/JavaScript-Helper-Methods",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Developer-Nijat/JavaScript-Helper-Methods"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
