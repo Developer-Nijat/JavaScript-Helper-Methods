@@ -1,0 +1,25 @@
+{
+  "name": "@developer.nijat/js-helpers",
+  "version": "1.0.8",
+  "description": "Useful JavaScript Methods by Nijat Aliyev",
+  "keywords": [
+    "js",
+    "javascript",
+    "useful",
+    "methods",
+    "functions",
+    "developer",
+    "nijat",
+    "aliyev"
+  ],
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Nijat Aliyev",
+  "license": "ISC",
+  "dependencies": {
+    "moment": "^2.29.4"
+  },
+  "devDependencies": {}
+}
