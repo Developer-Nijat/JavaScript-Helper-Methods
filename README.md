@@ -57,6 +57,16 @@ calculatePercentageOfNumber
 generateRandomColor
 
 normalizeSearchParams
+
+sumAllBetweenTwoIntegers
+
+capitalizeFirstLetter
+
+convertFileToUint8Array
+
+getUniqueListByKey
+
+toFixedWithoutRounding
 ```
 
 ### DATE
