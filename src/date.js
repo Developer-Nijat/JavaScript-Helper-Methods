@@ -1,16 +1,19 @@
-export const convertMillisToMinutesAndSeconds = (milliSeconds) => {
+export const convertMillisToMinutesAndSeconds = (milliSeconds = 1) => {
   try {
-    if (milliSeconds) {
-      var minutes = Math.floor(milliSeconds / 60000);
-      var seconds = ((milliSeconds % 60000) / 1000).toFixed(0);
-      return seconds == 60
-        ? minutes + 1 + ":00"
-        : minutes + ":" + (seconds < 10 ? "0" : "") + seconds;
+    if (typeof milliSeconds === "number") {
+      if (milliSeconds) {
+        var minutes = Math.floor(milliSeconds / 60000);
+        var seconds = ((milliSeconds % 60000) / 1000).toFixed(0);
+        return seconds == 60
+          ? minutes + 1 + ":00"
+          : minutes + ":" + (seconds < 10 ? "0" : "") + seconds;
+      } else {
+        return "00:00";
+      }
     } else {
-      return "00:00";
+      return "Invalid parameter. Required integer!";
     }
   } catch (error) {
-    console.log("convertMillisToMinutesAndSeconds error", error);
     return error;
   }
 };
@@ -34,7 +37,6 @@ export const calculateDurationWithStartDate = (date) => {
       return "00:00";
     }
   } catch (error) {
-    console.log("calculateDurationWithStartDate error", error);
     return error;
   }
 };
@@ -58,40 +60,45 @@ export const convertDateToMilliSeconds = (date) => {
       return 0;
     }
   } catch (error) {
-    console.log("convertDateToMilliSeconds error", error);
     return error;
   }
 };
 
-export const convertTime12to24 = (time12h) => {
+export const convertTime12to24 = (time12h = "") => {
   try {
-    const [time, modifier] = time12h.split(" ");
-    let [hours, minutes] = time.split(":");
-    if (hours === "12") {
-      hours = "00";
+    if (typeof time12h === "string") {
+      const [time, modifier] = time12h.split(" ");
+      let [hours, minutes] = time.split(":");
+      if (hours === "12") {
+        hours = "00";
+      }
+      if (modifier === "PM") {
+        hours = parseInt(hours, 10) + 12;
+      }
+      return `${hours}:${minutes}`;
+    } else {
+      return "Invalid parameter. Required string!";
     }
-    if (modifier === "PM") {
-      hours = parseInt(hours, 10) + 12;
-    }
-    return `${hours}:${minutes}`;
   } catch (error) {
-    console.log("convertTime12to24 error", error);
     return error;
   }
 };
 
-export const convertSecondsToTime = (input, separator) => {
+export const convertSecondsToTime = (seconds = 1, separator = ":") => {
   try {
-    var pad = function (input) {
-      return input < 10 ? "0" + input : input;
-    };
-    return [
-      pad(Math.floor(input / 3600)),
-      pad(Math.floor((input % 3600) / 60)),
-      pad(Math.floor(input % 60)),
-    ].join(typeof separator !== "undefined" ? separator : ":");
+    if (typeof seconds === "number" && typeof separator === "string") {
+      var pad = function (seconds) {
+        return seconds < 10 ? "0" + seconds : seconds;
+      };
+      return [
+        pad(Math.floor(seconds / 3600)),
+        pad(Math.floor((seconds % 3600) / 60)),
+        pad(Math.floor(seconds % 60)),
+      ].join(typeof separator !== "undefined" ? separator : ":");
+    } else {
+      return "Invalid params";
+    }
   } catch (error) {
-    console.log("convertSecondsToTime error: ", error);
-    throw error;
+    return error;
   }
 };

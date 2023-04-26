@@ -1,18 +1,21 @@
 import moment from "moment";
 
-export const getFileSize = (_size) => {
+export const getFileSize = (_size = 1) => {
   try {
-    var fSExt = new Array("Bytes", "KB", "MB", "GB"),
-      i = 0;
-    while (_size > 900) {
-      _size /= 1024;
-      i++;
+    if (typeof _size === "number") {
+      var fSExt = new Array("Bytes", "KB", "MB", "GB"),
+        i = 0;
+      while (_size > 900) {
+        _size /= 1024;
+        i++;
+      }
+      var exactSize = Math.round(_size * 100) / 100 + " " + fSExt[i];
+      return exactSize;
+    } else {
+      return "Invalid parameter. Required integer!";
     }
-    var exactSize = Math.round(_size * 100) / 100 + " " + fSExt[i];
-    return exactSize;
   } catch (error) {
-    console.log("getFileSize error: ", error);
-    throw error;
+    return error;
   }
 };
 
@@ -21,8 +24,7 @@ export const htmlDecode = (input) => {
     var doc = new DOMParser().parseFromString(input, "text/html");
     return doc.documentElement.textContent;
   } catch (error) {
-    console.log("htmlDecode error: ", error);
-    throw error;
+    return error;
   }
 };
 
@@ -32,105 +34,117 @@ export const htmlEncode = (input) => {
       return "&#" + i.charCodeAt(0) + ";";
     });
   } catch (error) {
-    console.log("htmlEncode error: ", error);
-    throw error;
+    return error;
   }
 };
 
-export const getRandomNumber = (min, max) => {
+export const getRandomNumber = (min = 1, max = 1) => {
   try {
-    return Math.floor(Math.random() * (max - min + 1) + min);
-  } catch (error) {
-    console.log("getRandomNumber error: ", error);
-    throw error;
-  }
-};
-
-export const uniqueNumberFromString = (stringValue, utf16 = false) => {
-  try {
-    let results = "";
-    const fixedNumber = utf16 ? 10000 : 100;
-    for (let i = 0; i < stringValue.length; i++) {
-      results += (fixedNumber + stringValue[i].charCodeAt(0)).toString();
+    if (typeof min === "number" && typeof max === "number") {
+      return Math.floor(Math.random() * (max - min + 1) + min);
+    } else {
+      return "Invalid params. Params must be integer!";
     }
-    return parseInt(results);
   } catch (error) {
-    console.log("uniqueNumberFromString error: ", error);
-    throw error;
+    return error;
   }
 };
 
-export function normalizeGraphFilterForExpress(filter) {
+export const uniqueNumberFromString = (stringValue = "", utf16 = false) => {
+  try {
+    if (typeof stringValue === "string") {
+      let results = "";
+      const fixedNumber = utf16 ? 10000 : 100;
+      for (let i = 0; i < stringValue.length; i++) {
+        results += (fixedNumber + stringValue[i].charCodeAt(0)).toString();
+      }
+      return parseInt(results);
+    } else {
+      return "Invalid parameter. Required string!";
+    }
+  } catch (error) {
+    return error;
+  }
+};
+
+export function normalizeGraphFilterForExpress(searchFilters = {}) {
   try {
     let where = "";
-    Object.entries(filter).forEach(([key, val], index) => {
-      const addition = index > 0 ? "," : "";
+    if (typeof searchFilters === "object") {
+      Object.entries(searchFilters).forEach(([key, val], index) => {
+        const addition = index > 0 ? "," : "";
 
-      if (val !== undefined && val != null) {
-        if (typeof val === "string") {
-          where += `${addition} ${key}: "${val}"`;
-        } else if (
-          typeof val === "object" &&
-          !Array.isArray(val) &&
-          val.getTime()
-        ) {
-          where += `${addition} ${key}: "${moment(val).format()}"`;
-        } else if (
-          Array.isArray(val) &&
-          (key.includes("_nin") || key.includes("_in"))
-        ) {
-          where += `${addition} ${key}: [${val.map((x) => {
-            return `"${x}"`;
-          })}]`;
-        } else {
-          where += `${addition} ${key}: ${val}`;
+        if (val !== undefined && val != null) {
+          if (typeof val === "string") {
+            where += `${addition} ${key}: "${val}"`;
+          } else if (
+            typeof val === "object" &&
+            !Array.isArray(val) &&
+            val.getTime()
+          ) {
+            where += `${addition} ${key}: "${moment(val).format()}"`;
+          } else if (
+            Array.isArray(val) &&
+            (key.includes("_nin") || key.includes("_in"))
+          ) {
+            where += `${addition} ${key}: [${val.map((x) => {
+              return `"${x}"`;
+            })}]`;
+          } else {
+            where += `${addition} ${key}: ${val}`;
+          }
         }
-      }
-    });
+      });
+    }
     return where;
   } catch (error) {
-    console.log("normalizeGraphFilterForExpress error: ", error);
-    throw error;
+    return error;
   }
 }
 
-export const normalizeAzPhoneNumber = (number) => {
+export const normalizeAzPhoneNumber = (number = "") => {
   try {
-    let cn = number || "";
-    let result = "";
-    if (cn.startsWith("+994")) {
-      result = cn.replace("+994", "0");
-      if (result.startsWith("012")) {
-        result = result.replace("012", "");
+    if (typeof number === "string") {
+      let cn = number || "";
+      let result = "";
+      if (cn.startsWith("+994")) {
+        result = cn.replace("+994", "0");
+        if (result.startsWith("012")) {
+          result = result.replace("012", "");
+        }
+      } else {
+        result = cn.replace("+", "");
       }
+      return result;
     } else {
-      result = cn.replace("+", "");
+      return "Invalid parameter. Required string!";
     }
-    return result;
   } catch (error) {
-    console.log("normalizeAzPhoneNumber error: ", error);
-    throw error;
+    return error;
   }
 };
 
-export const normalizeAz9DigitNumber = (number) => {
+export const normalizeAz9DigitNumber = (number = "") => {
   try {
-    let cn = number || "";
-    let result = "";
-    if (
-      (cn.startsWith("+") && !cn.startsWith("+994")) ||
-      (cn.length > 10 && !cn.startsWith("+") && !cn.startsWith("994"))
-    ) {
-      result = cn.replace("+", "");
-    } else if (cn.length > 7) {
-      result = cn.substr(cn.length - 9, 9);
+    if (typeof number === "string") {
+      let cn = number || "";
+      let result = "";
+      if (
+        (cn.startsWith("+") && !cn.startsWith("+994")) ||
+        (cn.length > 10 && !cn.startsWith("+") && !cn.startsWith("994"))
+      ) {
+        result = cn.replace("+", "");
+      } else if (cn.length > 7) {
+        result = cn.substr(cn.length - 9, 9);
+      } else {
+        result = cn.replace("+", "");
+      }
+      return result;
     } else {
-      result = cn.replace("+", "");
+      return "Invalid parameter. Required string!";
     }
-    return result;
   } catch (error) {
-    console.log("normalizeAz9DigitNumber error: ", error);
-    throw error;
+    return error;
   }
 };
 
@@ -149,16 +163,18 @@ export const extractNumberFromTime = (timeValue) => {
     }
     return Number(result);
   } catch (error) {
-    console.log("extractNumberFromTime error", error);
     return error;
   }
 };
 
-export const calculatePercentageOfNumber = (number, percentage) => {
+export const calculatePercentageOfNumber = (number = 1, percentage = 1) => {
   try {
-    return (number / 100) * percentage;
+    if (typeof number === "number" && typeof percentage === "number") {
+      return (number / 100) * percentage;
+    } else {
+      return "Invalid params. Params must be integer!";
+    }
   } catch (error) {
-    console.log("calculatePercentageOfNumber error", error);
     return error;
   }
 };
@@ -167,20 +183,95 @@ export const generateRandomColor = () => {
   try {
     return `#${Math.floor(Math.random() * 16777215).toString(16)}`;
   } catch (error) {
-    console.log("generateRandomColor error", error);
     return error;
   }
 };
 
-export function normalizeSearchParams(params) {
+export function normalizeSearchParams(searchParams = {}) {
   try {
     const resolvedParams = {};
-    Object.entries(params).forEach(([key, val]) => {
-      if (val) resolvedParams[key] = val;
-    });
+    if (typeof searchParams === "object") {
+      Object.entries(searchParams).forEach(([key, val]) => {
+        if (val) resolvedParams[key] = val;
+      });
+    }
     return resolvedParams;
   } catch (error) {
-    console.log("normalizeSearchParams error", error);
+    return error;
+  }
+}
+
+export function sumAllBetweenTwoIntegers(min = 1, max = 1) {
+  try {
+    if (typeof min === "number" && typeof max === "number") {
+      const result = ((max - min + 1) * (min + max)) / 2;
+      return result;
+    } else {
+      return "Invalid params. Params must be integer!";
+    }
+  } catch (error) {
+    return error;
+  }
+}
+
+export function capitalizeFirstLetter(stringValue = "") {
+  try {
+    if (typeof stringValue === "string") {
+      const result = string.charAt(0).toUpperCase() + string.slice(1);
+      return result;
+    } else {
+      return "Invalid parameter. Parameter must be string!";
+    }
+  } catch (error) {
+    return error;
+  }
+}
+
+export function convertFileToUint8Array(file) {
+  try {
+    return new Promise((resolve, reject) => {
+      file
+        .arrayBuffer()
+        .then((buff) => {
+          let x = new Uint8Array(buff);
+          resolve(x);
+        })
+        .catch((err) => {
+          console.log("convertFileToUint8Array.file.arrayBuffer error: ", err);
+          reject([]);
+        });
+    });
+  } catch (error) {
+    return error;
+  }
+}
+
+export function getUniqueListByKey(arrayList = [], key = "") {
+  try {
+    if (Array.isArray(arrayList) && typeof key === "string") {
+      const result = [
+        ...new Map(arrayList.map((item) => [item[key], item])).values(),
+      ];
+      return result;
+    } else {
+      return "Invalid params. Required array and string!";
+    }
+  } catch (error) {
+    return error;
+  }
+}
+
+export function toFixedWithoutRounding(number = 1, fixed = -1) {
+  try {
+    if (typeof number === "number" && typeof fixed === "number") {
+      const value = number && !isNaN(number) ? number : 0;
+      const re = new RegExp("^-?\\d+(?:.\\d{0," + (fixed || -1) + "})?");
+      const result = value.toString().match(re)[0];
+      return result;
+    } else {
+      return "Invalid params. Params must be integer!";
+    }
+  } catch (error) {
     return error;
   }
 }
