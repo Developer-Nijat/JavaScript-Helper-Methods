@@ -1,4 +1,5 @@
 import moment from "moment";
+import { commonMimeTypes } from "./constants";
 
 export const getFileSize = (_size = 1) => {
   try {
@@ -275,3 +276,24 @@ export function toFixedWithoutRounding(number = 1, fixed = -1) {
     return error;
   }
 }
+
+export const getFileMimeTypeByExt = (extension = "") => {
+  try {
+    if (typeof extension === "string") {
+      let result = "";
+      if (extension && extension.startsWith(".")) {
+        const findMimeType = commonMimeTypes.find(
+          (item) => item.Extension.toLowerCase() === extension.toLowerCase()
+        )["MIME Type"];
+        result = findMimeType || "Unsupported extension";
+      } else {
+        result = "Invalid file extension. (example input: '.png')";
+      }
+      return result;
+    } else {
+      return "Invalid parameter. Required string!";
+    }
+  } catch (error) {
+    return error;
+  }
+};
