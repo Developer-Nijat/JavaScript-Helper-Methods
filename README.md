@@ -67,6 +67,8 @@ convertFileToUint8Array
 getUniqueListByKey
 
 toFixedWithoutRounding
+
+getFileMimeTypeByExt
 ```
 
 ### DATE
