@@ -102,3 +102,30 @@ export const convertSecondsToTime = (seconds = 1, separator = ":") => {
     return error;
   }
 };
+
+export function getWeekOfMonth(date) {
+  try {
+    if (!date || typeof date !== "object") {
+      console.log("Invalid date: ", date);
+      return "Invalid date";
+    }
+    const startWeekDayIndex = 1; // 1 MonthDay 0 Sundays
+    const firstDate = new Date(date.getFullYear(), date.getMonth(), 1);
+    const firstDay = firstDate.getDay();
+
+    let weekNumber = Math.ceil((date.getDate() + firstDay) / 7);
+    if (startWeekDayIndex === 1) {
+      if (date.getDay() === 0 && date.getDate() > 1) {
+        weekNumber -= 1;
+      }
+
+      if (firstDate.getDate() === 1 && firstDay === 0 && date.getDate() > 1) {
+        weekNumber += 1;
+      }
+    }
+    return `week_${weekNumber}`;
+  } catch (error) {
+    console.log("getWeekOfMonth error: ", error);
+    return error;
+  }
+}

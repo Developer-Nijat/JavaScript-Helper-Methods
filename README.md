@@ -83,6 +83,8 @@ convertDateToMilliSeconds
 convertTime12to24
 
 convertSecondsToTime
+
+getWeekOfMonth
 ```
 
 ### VALIDATION
