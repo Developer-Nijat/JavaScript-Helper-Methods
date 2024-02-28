@@ -25,10 +25,6 @@ export default function App() {
 }
 ```
 
-# Dependencies
-
-moment
-
 # Useful Method List
 
 ### COMMON

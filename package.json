@@ -23,8 +23,6 @@
   },
   "author": "Nijat Aliyev",
   "license": "ISC",
-  "dependencies": {
-    "moment": "^2.29.4"
-  },
+  "dependencies": {},
   "devDependencies": {}
 }
