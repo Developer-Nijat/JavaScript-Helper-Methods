@@ -1,4 +1,4 @@
-# Useful JavaScript Methods by Nijat Aliyev
+# Useful JavaScript Methods by Nijat Aliyev (@developer.nijat)
 
 # How to install
 
