@@ -69,6 +69,10 @@ getUniqueListByKey
 toFixedWithoutRounding
 
 getFileMimeTypeByExt
+
+removeObjectPropertiesWithValue
+
+toSnakeCase
 ```
 
 ### DATE
