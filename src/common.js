@@ -296,3 +296,57 @@ export const getFileMimeTypeByExt = (extension = "") => {
     return error;
   }
 };
+
+export function removeObjectPropertiesWithValue(obj, value) {
+  try {
+    if (typeof obj !== "object" && !value) {
+      return "Invalid parameters! First parameter must be object and second parameter must be value";
+    }
+    const clone = (obj) => {
+      if (obj === null || typeof obj !== "object") {
+        return obj;
+      }
+
+      const newObj = obj.constructor();
+
+      for (let key in obj) {
+        newObj[key] = clone(obj[key]);
+      }
+
+      return newObj;
+    };
+
+    const removeProperties = (obj) => {
+      for (let key in obj) {
+        if (typeof obj[key] === "object" && obj[key] !== null) {
+          obj[key] = removeProperties(obj[key]);
+
+          if (Object.keys(obj[key]).length === 0) {
+            delete obj[key];
+          }
+        } else if (obj[key].includes(value)) {
+          delete obj[key];
+        }
+      }
+
+      if (Object.keys(obj).length === 0) {
+        return {};
+      }
+
+      return obj;
+    };
+
+    const clonedObj = clone(obj);
+
+    return removeProperties(clonedObj);
+  } catch (error) {
+    return error;
+  }
+}
+
+export const toSnakeCase = (str) => {
+  if (typeof str !== "string") {
+    return "Invalid parameter. Required string value!";
+  }
+  return str.replace(/[A-Z]/g, (match) => `_${match.toLowerCase()}`);
+};
