@@ -129,3 +129,19 @@ export function getWeekOfMonth(date) {
     return error;
   }
 }
+
+export function getStartDateOfWeek(year, weekNumber) {
+  let date = new Date(year, 0, 1);
+  let dayOfWeek = date.getDay();
+  date.setDate(
+    date.getDate() + (dayOfWeek <= 4 ? 1 - dayOfWeek : 8 - dayOfWeek)
+  );
+  date.setDate(date.getDate() + (weekNumber - 1) * 7);
+  return date;
+}
+
+export function getEndDateOfWeek(year, weekNumber) {
+  let date = getStartDateOfWeek(year, weekNumber);
+  date.setDate(date.getDate() + 6);
+  return date;
+}

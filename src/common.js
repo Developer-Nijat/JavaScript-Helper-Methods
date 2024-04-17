@@ -1,4 +1,3 @@
-import moment from "moment";
 import { commonMimeTypes } from "./constants";
 
 export const getFileSize = (_size = 1) => {
@@ -83,7 +82,7 @@ export function normalizeGraphFilterForExpress(searchFilters = {}) {
             !Array.isArray(val) &&
             val.getTime()
           ) {
-            where += `${addition} ${key}: "${moment(val).format()}"`;
+            where += `${addition} ${key}: "${new Date(val).toISOString()}"`;
           } else if (
             Array.isArray(val) &&
             (key.includes("_nin") || key.includes("_in"))

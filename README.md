@@ -25,9 +25,7 @@ export default function App() {
 }
 ```
 
-# Dependencies
-
-moment
+# Zero Dependencies
 
 # Useful Method List
 
@@ -85,6 +83,10 @@ convertTime12to24
 convertSecondsToTime
 
 getWeekOfMonth
+
+getStartDateOfWeek
+
+getEndDateOfWeek
 ```
 
 ### VALIDATION
