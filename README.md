@@ -19,7 +19,7 @@ import { generateRandomColor } from "@developer.nijat/js-helpers";
 export default function App() {
   function test() {
     const randomColor = generateRandomColor();
-    console.log(randomColor);
+    console.log("randomColor: ", randomColor);
   }
   return <>Demo Content</>;
 }
